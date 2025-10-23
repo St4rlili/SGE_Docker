@@ -1,5 +1,5 @@
-##Sistemas de Gestión Empresarial
-###2025/2026
+## Sistemas de Gestión Empresarial
+### 2025/2026
 
 En este repositorio se guardarán las prácticas de **SGE** en las se haya utilizado **Docker**.
 
