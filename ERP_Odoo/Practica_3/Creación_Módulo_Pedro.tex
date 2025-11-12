@@ -1,0 +1,253 @@
+\documentclass[12pt, a4paper]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, es-tabla]{babel}
+
+\usepackage[a4paper, margin=2.5cm]{geometry}
+\linespread{1.2}
+
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{booktabs}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    urlcolor=cyan!70!black,
+}
+
+\renewcommand{\lstlistingname}{Código}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{black!5},
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    frame=single,
+    framerule=0.5pt,
+    rulecolor=\color{black!20},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    numbersep=5pt,
+    captionpos=b,
+}
+\lstset{style=mystyle}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/odoo_logo.png}
+    
+    \vspace{3cm}
+    
+    \Huge\bfseries
+    Documentación Técnica: \\
+    Creación de módulos de Odoo
+    
+    \vfill
+    
+    \Large
+    \textbf{Autor:} Pedro José Meixús Belsol \\
+    \vspace{0.5cm}
+    \today
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\chapter{Implantación módulo basico}
+\section{Creación y funcionamiento}
+Empezaremos con la creación de un módulo 'Hola mundo' que nos servirá para comprobar que tenemos mapeadas correctamente las carpetas.
+
+Primero crearemos el archivo \textbf{'\_\_init\_\_.py'}, el cuál dejaremos vacío en este caso.
+
+Por otro parte también crearemos el archivo \textbf{'\_\_manifest\_\_.py'}, en el que meteremos el siguiente código:
+
+\vspace{0.5cm}
+
+\begin{lstlisting}[caption={Contenido de \_\_manifest\_\_.py}]
+# -*- coding: utf-8 -*-
+{'name': 'Ejemplo01-Hola mundo'}
+\end{lstlisting}
+
+\vspace{0.5cm}
+
+Con esto, tendremos un módulo vacío, y que ahora nos debería aparecer en los módulos de Odoo. Vamos a comprobarlo:
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images/hola_mundo.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Si nos sale disponible en la búsqueda y con el nombre que le hemos puesto es que lo hemos hecho bien y tenemos todo mapeado correctamente. Podríamos activarlo, pero no hará nada ya que está vacío.
+
+Como en mi caso no he tenido ningún error con esto, pasaremos directamente al siguiente módulo.
+
+\chapter{Implantación del Primer módulo}
+\section{Creación y funcionamiento}
+
+Para la creación de este módulo he utilizado \textbf{Odoo Scaffold}, usando los siguiente comandos:
+
+\vspace{0.5cm}
+
+\begin{lstlisting}[caption=Creación de módulo con Odoo Scaffold]
+docker-compose exec web /bin/bash
+odoo scaffold lista_tareas /mnt/extra-addons/
+chmod 777 -R /mnt/extra-addons/lista_tareas
+\end{lstlisting}
+
+\vspace{0.5cm}
+
+Con el primer comando accedemos a la consola del contenedor de Odoo y después con Odoo Scaffold creamos el módulo lista\_tareas con todo lo necesario.
+
+Tras haberlo creado utilizamos \textbf{chmod} para darle todos los permisos que necesite.
+
+Ahora, utilizando el código que se nos aporta para crear una lista de tareas básica vamos a meterlo en nuestro archivos, especificamente en estos tres:
+
+\vspace{0.5cm}
+
+\begin{table}[h!]
+    \centering
+    \caption{Archivos cambiado para la lista de tareas}
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Archivo} & \textbf{Propósito} \\ \midrule
+        \texttt{\_\_manifest\_\_.py} & Contiene la información básica del módulo (nombre,descripción,etc) \\
+        \texttt{models.py} & Es un ejemplo o molde de los datos y que apartados tendrán \\
+        \texttt{views.xml} & Define como se verán las vistas de nuestro módulo \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+\vspace{0.5cm}
+
+Una vez hayamos añadido/modificado el código necesario en los archivos mencionados previamente el módulo estará listo. Si lo buscamos debería aparecernos además de dejarnos activarlo y acceder a él.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images/lista_tareas.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Ahora que está activado accederemos desde la parte superior izquierda.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=0.3\textwidth]{images/lista_tareas_menu.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Y dentro, se debería mostrar lo esperado, una lista donde podremos añadir tareas y marcarlas como completadas o urgentes, además de ponerle una prioridad.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/lista_tareas_final.png}
+\end{center}
+
+\vspace{0.5cm}
+
+\section{Problemas y Errores}
+A lo largo de la creación de este módulo si me surjieron un par de problemas:
+\subsection{Tabulaciones}
+Como no tengo demasiada experiencia con Python, olvidé algunas de las tabulaciones para el correcto funcionamiento del código y Odoo me estaba dando algunos errores al intentar activar el módulo.
+Simplemente repasé el código y fui tabulando todo lo necesario. De hecho, lo que más tiempo me llevó fue darme cuenta de que el 'api.depends' estaba mal tabulado y por eso el booleano
+de \textbf{Urgencia} no se activaba nunca.
+\subsection{Trees}
+Utilizando el código proporcionado había un problema, y es que este utilizaba \textbf{tree} para la lista de tareas, pero Odoo no lo aceptaba y no me dejaba acceder al módulo.
+La solución fue cambiarlo por un \textbf{list} que es muy similar y cumple la misma función. Con eso Odoo ya me permitía acceder.
+
+Al final, terminé simplificandolo y me decanté por dejarlo como un simple booleano que se activa a mano, igual que el de 'Tarea realizada'.
+
+\chapter{Modificación del Primer módulo}
+\section{Mejoras propuestas}
+El objetivo será añadir la fecha de creación y fecha de finalización a cada tarea. Esto es especialmente útil para tener un registro más avanzado y detallado de nuestras tareas.
+
+\section{Creación y funcionamiento}
+Empezaremos por la fecha de creación, para esto añadiremos esto en \textbf{'models.py'}:
+
+\vspace{0.5cm}
+
+\begin{lstlisting}[caption=Variable que obtiene la fecha actual]
+fechacreacion = fields.Datetime(string='Fecha de creacion',default=fields.Datetime.now)
+\end{lstlisting}
+
+\vspace{0.5cm}
+
+Esto se encargará de marcar la fehca y hora en el momento en el que se crea una nueva tarea. Después para que esto se muestre añadiremos un field en \textbf{\'views.xml\'}
+
+\vspace{0.5cm}
+
+\begin{lstlisting}[caption=Campo que se muestra en odoo con la fecha de creación]
+<field name='fecha_creacion'></field>
+\end{lstlisting}
+
+\vspace{0.5cm}
+
+Cuando creemos una tarea se tomará la fecha actual y se pondrá como fecha de creación como se muestra a continuación:
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/fecha_creacion.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Ahora para la fecha de finalización haremos algo muy similar. Añadiremos en esto en \textbf{'models.py'}:
+
+\vspace{0.5cm}
+
+\begin{lstlisting}[caption=Variable que obtiene la fecha actual y llama una funcion]
+fecha_terminada = fields.Datetime(string='Fecha de finalizacion',compute='_compute_fecha_terminada',store=True)
+\end{lstlisting}
+
+\vspace{0.5cm}
+
+Esta se encargará de llamar una función que tomará la fecha actual en el momento en el que se marque la tarea como realizada. La función es la siguiente:
+
+\vspace{0.5cm}
+
+\begin{lstlisting}[caption=Funcion para tomar la fecha actual cuando se marca como completada]
+    @api.depends('realizada')
+    def _compute_fecha_terminada(self):
+        for record in self:
+            if record.realizada and not record.fecha_terminada:
+                record.fecha_terminada = fields.Datetime.now()
+            else:
+                record.fecha_terminada = False
+\end{lstlisting}
+
+\vspace{0.5cm}
+
+Ahora solo queda mostrala en su respectivo campo, esto lo haremos añadiendo el field a \textbf{'views.xml'}:
+
+\vspace{0.5cm}
+
+\begin{lstlisting}[caption=Campo que se muestra en odoo con la fecha de finalización]
+<field name='fecha_terminada'></field>
+\end{lstlisting}
+
+\vspace{0.5cm}
+
+Entonces al marcar una tarea como terminada se tomará la fecha actual y se pondrá como fecha de finalización como se muestra a continuación:
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/fecha_creacion.png}
+\end{center}
+
+\vspace{0.5cm}
+
+A la hora de modificar este módulo no he tenido ningún problema en especial, así que con esto quedaría terminado.
+
+\end{document}
