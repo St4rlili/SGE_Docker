@@ -2,28 +2,61 @@
 <data>
 <!-- explicit list view definition -->
 <!-- Definimos como es la vista explicita de la litas-->
-<record model="ir.ui.view" id="lista_tareas.list">
-<field name="name">lista_tareas list</field>
-<field name="model">lista_tareas.lista_tareas</field>
-<field name="arch" type="xml">
-<list>
-<field name="tarea"/>
-<field name="prioridad"/>
-<field name="urgente"/>
-<field name="realizada"/>
-<field name="fecha_creacion"></field>
-<field name="fecha_terminada"></field>
-</list>
-</field>
+<record model="ir.ui.view" id="lista_tareas.kanban">
+    <field name="name">lista_tareas kanban</field>
+    <field name="model">lista_tareas.lista_tareas</field>
+    <field name="arch" type="xml">
+        <kanban class="o_kanban_small_column">
+            <field name="tarea"/>
+            <field name="prioridad"/>
+            <field name="urgente"/>
+            <field name="realizada"/>
+            <field name="fecha_creacion"/>
+            <field name="fecha_terminada"/>
+
+            <templates>
+                <t t-name="card">
+                    <div class="oe_kanban_card">
+                        <strong><field name="tarea"/></strong>
+                        <div>Prioridad: <field name="prioridad"/></div>
+                        <div>Urgente: <field name="urgente"/></div>
+                        <div>Realizada: <field name="realizada"/></div>
+                        <div>Creada: <field name="fecha_creacion"/></div>
+                        <div>Terminada: <field name="fecha_terminada"/></div>
+                    </div>
+                </t>
+            </templates>
+
+        </kanban>
+    </field>
 </record>
-<!-- actions opening views on models -->
-<!-- Acciones al abrir las vistas en los modelos
--->
+
+<record model="ir.ui.view" id="lista_tareas.calendar">
+    <field name="name">lista_tareas calendar</field>
+    <field name="model">lista_tareas.lista_tareas</field>
+    <field name="arch" type="xml">
+        <calendar
+            color="prioridad"
+            date_start="fecha_creacion"
+            date_stop="fecha_terminada"
+            string="Calendario de Tareas">
+
+            <field name="tarea"/>
+            <field name="prioridad"/>
+            <field name="urgente"/>
+            <field name="realizada"/>
+
+        </calendar>
+    </field>
+</record>
+
+
 <record model="ir.actions.act_window" id="lista_tareas.action_window">
-<field name="name">Listado de tareas pendientes</field>
-<field name="res_model">lista_tareas.lista_tareas</field>
-<field name="view_mode">list,form</field>
+    <field name="name">Listado de tareas pendientes</field>
+    <field name="res_model">lista_tareas.lista_tareas</field>
+    <field name="view_mode">kanban,form,calendar</field>
 </record>
+
 <!-- Top menu item -->
 <menuitem name="Listado de tareas" id="lista_tareas.menu_root"/>
 <!-- menu categories -->

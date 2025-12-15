@@ -1,0 +1,39 @@
+<odoo>
+    <record id="view_modulo_form" model="ir.ui.view">
+        <field name="name">modulo.form</field>
+        <field name="model">instituto.modulo</field>
+        <field name="arch" type="xml">
+            <form string="Módulo">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="ciclo_id"/>
+                        <field name="profesor_id"/>
+                        <field name="alumnos_ids"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_modulo_list" model="ir.ui.view">
+        <field name="name">modulo.list</field>
+        <field name="model">instituto.modulo</field>
+        <field name="arch" type="xml">
+            <list string="Módulos">
+                <field name="name"/>
+                <field name="ciclo_id"/>
+                <field name="profesor_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_modulos" model="ir.actions.act_window">
+        <field name="name">Módulos</field>
+        <field name="res_model">instituto.modulo</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_modulos" name="Módulos" parent="menu_instituto_root" action="ciclos.action_modulos"/>
+
+</odoo>

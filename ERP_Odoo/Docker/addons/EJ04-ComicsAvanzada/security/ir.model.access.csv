@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_biblioteca_comic_user,biblioteca_comic_user,model_biblioteca_comic,base.group_user,1,1,1,1
+access_biblioteca_categoria_user,biblioteca_comic_categoria_user,model_biblioteca_comic_categoria,base.group_user,1,1,1,1
+access_biblioteca_socio_user,biblioteca_comic_socio_user,model_biblioteca_comic_socio,base.group_user,1,1,1,1
+access_biblioteca_ejemplar_user,biblioteca_comic_ejemplar_user,model_biblioteca_comic_ejemplar,base.group_user,1,1,1,1

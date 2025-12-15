@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_biblioteca_comic_socio" model="ir.actions.act_window">
+        <field name="name">Socios</field>
+        <field name="res_model">biblioteca.comic.socio</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="socio_base_menu" name="Socios" parent="biblioteca_base_menu"/>
+
+    <menuitem id="menu_socio" 
+            parent="socio_base_menu"
+            name="Gestión de Socios"
+            action="action_biblioteca_comic_socio"/>
+ 
+    <record id="view_biblioteca_comic_socio_form" model="ir.ui.view">
+        <field name="name">biblioteca.comic.socio.form</field>
+        <field name="model">biblioteca.comic.socio</field>
+        <field name="arch" type="xml">
+            <form string="Socio">
+                <sheet>
+                    <group>
+                        <field name="nombre"/>
+                        <field name="apellido"/>
+                        <field name="identificador"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_biblioteca_comic_socio_list" model="ir.ui.view">
+        <field name="name">biblioteca.comic.socio.list</field>
+        <field name="model">biblioteca.comic.socio</field>
+        <field name="arch" type="xml">
+            <list string="Socios">
+                <field name="nombre"/>
+                <field name="apellido"/>
+                <field name="identificador"/>
+            </list>
+        </field>
+    </record>
+</odoo>

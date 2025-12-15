@@ -1,0 +1,39 @@
+<odoo>
+    <record id="view_paciente_list" model="ir.ui.view">
+        <field name="name">hospital.paciente.list</field>
+        <field name="model">hospital.paciente</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="sintomas"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_paciente_form" model="ir.ui.view">
+        <field name="name">hospital.paciente.form</field>
+        <field name="model">hospital.paciente</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="sintomas"/>
+                        <field name="consulta_ids"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_hospital_root" name="Hospital"/>
+    <menuitem id="menu_paciente" parent="menu_hospital_root" name="Pacientes"/>
+
+    <record id="action_paciente" model="ir.actions.act_window">
+        <field name="name">Pacientes</field>
+        <field name="res_model">hospital.paciente</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_paciente_action" parent="menu_paciente" action="action_paciente"/>
+</odoo>

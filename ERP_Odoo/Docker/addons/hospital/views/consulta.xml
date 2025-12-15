@@ -1,0 +1,40 @@
+<odoo>
+    <record id="view_consulta_list" model="ir.ui.view">
+        <field name="name">hospital.consulta.list</field>
+        <field name="model">hospital.consulta</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="paciente_id"/>
+                <field name="medico_id"/>
+                <field name="fecha"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_consulta_form" model="ir.ui.view">
+        <field name="name">hospital.consulta.form</field>
+        <field name="model">hospital.consulta</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="paciente_id"/>
+                        <field name="medico_id"/>
+                        <field name="diagnostico"/>
+                        <field name="fecha"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_consulta" parent="menu_hospital_root" name="Consultas"/>
+
+    <record id="action_consulta" model="ir.actions.act_window">
+        <field name="name">Consultas</field>
+        <field name="res_model">hospital.consulta</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_consulta_action" parent="menu_consulta" action="action_consulta"/>
+</odoo>

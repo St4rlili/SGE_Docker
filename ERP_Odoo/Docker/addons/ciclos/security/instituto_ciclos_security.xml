@@ -1,0 +1,20 @@
+<odoo>
+    <record id="grupo_director" model="res.groups">
+        <field name="name">Director</field>
+    </record>
+
+    <record id="grupo_profesor" model="res.groups">
+        <field name="name">Profesor</field>
+    </record>
+
+    <record id="profesor_regla" model="ir.rule">
+        <field name="name">Profesor solo lectura de profesores</field>
+        <field name="model_id" ref="model_instituto_profesor"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('ciclos.grupo_profesor'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>
