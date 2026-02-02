@@ -1,0 +1,610 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, es-tabla]{babel}
+
+\usepackage[a4paper, margin=2.5cm]{geometry}
+\linespread{1.2}
+
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{booktabs}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    urlcolor=cyan!70!black,
+}
+
+\renewcommand{\lstlistingname}{Código}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{black!5},
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    frame=single,
+    framerule=0.5pt,
+    rulecolor=\color{black!20},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    numbersep=5pt,
+    captionpos=b,
+}
+\lstset{style=mystyle}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/odoo_logo.png}
+    
+    \vspace{3cm}
+    
+    \Huge\bfseries
+    Documentación Técnica: \\
+    Módulos Odoo y Web Controllers
+    
+    \vfill
+    
+    \Large
+    \textbf{Autor:} Pedro José Meixús Belsol \\
+    \vspace{0.5cm}
+    \today
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Modificar módulo liga fútbol}
+Tomando como base el módulo \texttt{EJ07\-LigaFutbol} que se nos ha proporcionado, vamos a realizar diferentes modificaciones para ampliar su funcionalidad.
+
+\subsection{Reglas de puntuación especiales}
+Empezaremos por modificar las reglas de puntuación. Haremos que los partidos con 4 o más goles de diferencia otorguen 4 puntos al equipo ganador y -1 al perdedor.
+Para eso crearemos una función en el modelo de 'liga\_partido.py' para que lo calcule, simplemente comparando la diferencia de goles de goles.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images/codigo_puntuacion.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Podemos comprobarlo creando un partido con 4 goles de diferencia y viendo la tabla de clasificación.
+Ahora mismo esta es la tabla de clasificación:
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/tabla_puntuacion.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Vamos a añadir un partido en el que el equipo Real Madrid gana 6-0.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/creacion_partido_puntos.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Y ahora la puntuación debería haber aumentando en 4 puntos para el Real Madrid y disminuido en 1 para el Barcelona.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/tabla_puntuacion2.png}
+\end{center}
+
+\vspace{0.5cm}
+
+\newpage
+\subsection{Botones para alterar los goles de los partidos}
+Vamos a añadir dos botones en la vista de formulario de los partidos para aumentar o disminuir los goles de todos los equipos locales o visitantes.
+Tendremos que añadir dos funciones en el modelo de 'liga\_partido.py' para que lo hagan.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/codigo_sumar_goles.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Vamos a probar si funciona, primero veremos los resultados de los partidos.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/resultados_puntos.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Ahora accedo a uno de ellos y pulso una vez cada botón.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/botones_sumar.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Y ahora volvemos a ver los resultados de los partidos para comprobar que se han modificado correctamente.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/resultados_puntos2.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Para probar que la clasificación se recalcula, voy a sumarle dos veces a los visitantes y al ver la clasificación podemos ver que ha cambiado.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/tabla_puntuacion3.png}
+\end{center}
+
+\vspace{0.5cm}
+
+\newpage
+\subsection{Web Controller para eliminar empates}
+
+Vamos a añadir un Web Controller que nos permita eliminar todos los partidos que hayan terminado en empate.
+Primero añadiremos un '@http.route' con una función que buscara los partidos terminados en empate y los eliminará.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images/codigo_empate.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Ahora crearemos un partido que termine en empate, si no tenemos alguno lo crearemos como en mi caso.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/con_empate.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Teniendo uno por lo menos iremos a la URL del Web Controller que hemos creado ('http://localhost:8069/eliminarempates') 
+y eliminará automaticamente los partidos en empate.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/borrar_empate.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Y si volvemos a la vista de partidos podemos ver que el partido en empate ha sido eliminado.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/sin_empate.png}
+\end{center}
+
+\vspace{0.5cm}
+
+\newpage
+\subsection{Informe PDF por partido}
+No he conseguido hacer funcionar esta parte.
+
+*Revisar en la sección de problemas encontrados al final del documento.
+
+\newpage
+\subsection{Wizard para crear nuevos partidos}
+Vamos a crear un Wizard que nos permita crear nuevos partidos de una forma más sencilla.
+Para eso crearemos dos archivos nuevos, uno para el modelo del Wizard y otro para la vista dentro de la carpeta 'wizard'.
+
+En el modelo crearemos los campos necesarios (y sus relaciones) para crear un partido y una función que lo cree.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images/codigo_wizard.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Y en la vista crearemos el formulario para el Wizard.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images/codigo_wizard_xml.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Con esto ya hecho, añadiremos la ruta del xml al '\_\_manifest\_\_.py' para que Odoo los reconozca. 
+Y ahora veremos un nuevo botón en el menú superior para abrir el Wizard.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/boton_wizard.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Al pulsarlo se abrirá el Wizard que hemos creado y podremos añadir un nuevo partido.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/wizard_funcionando.png}
+\end{center}
+
+\vspace{0.5cm}
+
+\newpage
+\subsection{Vista Graph para goles de equipos locales}
+Vamos a añadir una vista Graph que nos muestre los goles totales de los equipos locales.
+
+Para esto he añadido la vista Graph en el archivo XML de 'liga\_partido.xml'.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images/codigo_graph.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Y también he añadido la acción para que se una de las vistas posibles.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/codigo_graph2.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Ahora si vamos a la vista de partidos podemos seleccionar la vista Graph y ver los goles totales de los equipos locales.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/vista_graph.png}
+\end{center}
+
+\vspace{0.5cm}
+
+\newpage
+\section{Bot de Telegram conectado a la API REST}
+
+En esta actividad vamos a crear un bot de Telegram que se conecte a la API REST que creamos 
+en la actividad anterior. Usaremos la librería 'python-telegram-bot' para crear el bot y la 
+librería 'requests' para hacer las peticiones HTTP a la API REST. Dependiendo de la orden que se 
+envíe se realizarán diferentes peticiones (GET, POST, PUT o DELETE) a la API, Odoo procesara esa 
+solicitud y el bot devolverá el resultado al usuario.
+
+\subsection{Creación del bot}
+
+Primero de nada, debemos crear el propio bot en telegram. Para eso, abrimos Telegram y buscamos el bot 'BotFather'.
+Le enviamos el comando '/newbot' y seguimos las instrucciones para crear nuestro bot.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images/creacion_bot.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Nos dará un token que guardaremos y usaremos para conectar nuestro bot con la API de Telegram.
+
+\newpage
+\subsection{Creación y configuración de entorno para el bot}
+
+Ahora crearemos un entorno virtual para nuestro bot con el siguiente comando.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/creacion_entorno.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Accedemos al entorno virtual e instalaremos las librerías necesarias con pip(el python-telegram-bot y requests).
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/instalacion_bot.png}
+\end{center}
+
+\vspace{0.5cm}
+
+\newpage
+\subsection{Desarrollo}
+
+Posteriormente crearemos un archivo 'bot\_socios.py' y añadiremos el código necesario para crear el bot. 
+Aquí es donde deberemos usar por un lado el token que nos dio BotFather y por otro la URL de nuestra API REST.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images/codigo_token.png}
+\end{center}
+
+\vspace{0.5cm}
+
+También deberemos indicar las funciones para interactuar con la API REST (crear, modificar, consultar y borrar socios).
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images/codigo_bot.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Las funciones anteriores se usarán en la función principal del bot (handler), que se encargará de manejar los mensajes recibidos y llamar a las funciones correspondientes según el comando recibido.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images/codigo_botFinal.png}
+\end{center}
+
+\vspace{0.5cm}
+
+\newpage
+\subsection{Arranque y funcionamiento}
+
+Con todo esto hecho podemos iniciar nuestro bot con el siguiente comando.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/iniciarBot.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Desde dentro usaremos el comando 'python' junto con el nombre del archivo para iniciarlo y si todo esta correcto iniciará sin problema.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/botIniciado.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Ahora nos quedará probar los comandos uno por uno desde Telegram y ver si los cambios se reflejan en Odoo. Empecemos creando un socio.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images/comandoBot1.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Y comprobamos en Odoo que se ha creado correctamente.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/botPrueba1.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Probemos a modificarlo.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images/comandoBot2.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Revisamos en Odoo que el apellido ha sido modificado.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/botPrueba2.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Ahora borraremos el socio que hemos creado.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images/comandoBot3.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Y comprobamos en Odoo que ha sido eliminado.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/botPrueba3.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Para terminar las operaciones probaremos a consultar un socio (en este caso el que tenga el numero de socio 3).
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images/comandoBot4.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Por último, comprobamos que al mandar cualquier otro mensaje el bot responde 'Orden no soportada'.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images/comandoBot5.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Si todo ha funcionado correctamente, nuestro bot estará terminado.
+
+\newpage
+\section{Generación de imágenes aleatorias con Web Controllers}
+Para esta parte de la práctica, vamos a crear un Web Controller que genere imágenes aleatorias tomando como base el módulo 
+'EJ09-GenerarBarcode' proporcionado.
+
+\subsection{Instalaciones necesarias}
+Primero deberemos acceder a nuestro contenedor de Odoo, para buscarlo usaremos el comando 'docker ps'.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/contenedores.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Esto nos mostrará los contenedores activos, buscaremos el ID del  contenedor de Odoo y accederemos a el con el siguiente comando.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/bash.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Una vez dentro usaremos el comando 'pip list' para ver las librerías instaladas.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/librerias.png}
+\end{center}
+
+\vspace{0.5cm}
+
+En cualquier caso, haremos un 'apt-get update' para actualizar lo necesario.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/actualizar.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Ahora instalaremos las librerías que vamos a necesitar con los siguiente comandos.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/instalacion_python.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Hecho esto, reiniciamos el contenedor para que los cambios tengan efecto. Y activamos el módulo en Odoo.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images/activar_modulo.png}
+\end{center}
+
+\vspace{0.5cm}
+
+\newpage
+\subsection{Prueba Web Controller de código de barras}
+
+Ahora podemos probar el Web Controller del código de barras que viene por defecto accediendo a la URL 'http://localhost:8069/generador/123456789012'.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/barras.png}
+\end{center}
+
+\vspace{0.5cm}
+
+\newpage
+\subsection{Creación de Web Controller para imágenes aleatorias}
+
+Vamos ahora entonces a añadir nuestro propio Web Controller para generar imágenes aleatorias. Añadiremos un archivo en mi caso 
+'generarimagen.py' y añadiremos el siguiente código, que generará pixeles de colores aleatorios con el alto y ancho que indiquemos.
+
+La imagen se genera en formato PNG y se devolverá como respuesta al acceder a la URL.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images/codigo_imagen.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Con esto hecho, actualizamos el módulo y probamos el Web Controller accediendo a la URL 'http://localhost:8069/imagen/aleatoria?ancho=300\&alto=300' 
+(indicando el alto y ancho deseados).
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/imagen.png}
+\end{center}
+
+\vspace{0.5cm}
+
+\newpage
+\section{Problemas encontrados}
+
+Durante la realización de esta práctica he tenido algunos problemas básicos como sintaxis de Python o permisos mal configurados.
+
+*Pero el principal problema lo he tenido en el apartado 4 de la primera actividad, el informe PDF para los partidos.
+Al intentar generar el PDF, me da un error de 'External ID not found'.
+
+\vspace{0.5cm}
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{images/error_pdf.png}
+\end{center}
+
+\vspace{0.5cm}
+
+Por la experiencia que tengo con Odoo y lo que he investigado, debería ser un problema con la referencia 
+(que la hubiera escrito mal) o que no haya declarado el XML en el manifest y Odoo no pueda verlo, pero aún 
+revisandolo varias veces no he conseguido encontrar el error, por lo que no he podido completar esa parte de la práctica.
+
+Algunos problemas menores que he tenido también fueron con la creación del bot de Telegram, la recalculación de las puntuaciones de 
+los partidos y los botones para alterar los goles, pero no espcialmente destacables
+
+\newpage
+\section{Conclusión}
+Esta práctica me ha servido para desenvolverme más en la creación y modificación de módulos en Odoo, 
+la creación de Web Controllers, la interacción de una API REST con otro servicio diferente (en este caso, el bot de Telegram).
+
+\end{document}

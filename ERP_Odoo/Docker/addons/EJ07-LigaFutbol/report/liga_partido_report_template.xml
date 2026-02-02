@@ -1,0 +1,11 @@
+<odoo>
+    <template id="liga_partido_report_template">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="o">
+                <h2>Partido: <t t-esc="o.equipo_casa.nombre"/> vs <t t-esc="o.equipo_fuera.nombre"/></h2>
+                <p>Goles Casa: <t t-esc="o.goles_casa"/></p>
+                <p>Goles Fuera: <t t-esc="o.goles_fuera"/></p>
+            </t>
+        </t>
+    </template>
+</odoo>
